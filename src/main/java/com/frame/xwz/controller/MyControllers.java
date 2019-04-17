@@ -5,6 +5,8 @@ import com.frame.xwz.model.User;
 import com.frame.xwz.service.MyServices;
 import com.frame.xwz.source.auto.*;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -28,6 +30,17 @@ public class MyControllers {
         System.out.println(name);
         System.out.println(age);
         return myServices.getUserById(id);
+    }
+
+    @MyRequestMapping("getUsers")
+    public List<User> getUsers() {
+        return myServices.getUsers();
+    }
+
+
+    @MyRequestMapping("test")
+    public String getUserById(Date date, LocalDateTime localDateTime) {
+        return "测试空参数";
     }
 
 }

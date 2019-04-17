@@ -15,7 +15,7 @@ apply plugin: 'io.spring.dependency-management'
 
 group = 'com.frame.xwz'
 version = '1.0.0'
-sourceCompatibility = '11'
+sourceCompatibility = '8'
 
 configurations {
     compileOnly {

@@ -1,10 +1,8 @@
 package com.frame.xwz.source.http;
 
-
+import com.frame.xwz.source.util.DateUtils;
 import com.frame.xwz.source.util.GsonUtil;
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
@@ -46,10 +44,18 @@ public class MyRequestHandlerPlus {
                 obj = flag ? (String) obj : (String) null;
                 break;
             case DATE:
-                obj = flag ? (String) obj : (Date) null;
+                if (flag) {
+                    obj = DateUtils.getDate((String) obj);
+                } else {
+                    obj = (Date) null;
+                }
                 break;
             case LOCAL_DATE_TIME:
-                obj = flag ? (String) obj : (LocalDateTime) null;
+                if (flag) {
+                    obj = DateUtils.getLocalDateTime(DateUtils.getDate((String) obj));
+                } else {
+                    obj = (LocalDateTime) null;
+                }
                 break;
             case SHORT:
                 obj = flag ? Short.valueOf((String) obj) : (Short) null;
@@ -191,13 +197,13 @@ public class MyRequestHandlerPlus {
         //for (Object key : jsonParams.keySet()) {
         //    params.put(key.toString(), jsonParams.get(key));
         //}
-        Gson gson = new Gson();
-        JsonElement jsonElement = gson.toJsonTree(strContent);
-        jsonElement.isJsonObject();
-        JsonObject jsonObject = jsonElement.getAsJsonObject();
-        for (Object key : jsonObject.keySet()) {
-            params.put(key.toString(), jsonObject.get((String) key));
-        }
+        //Gson gson = new Gson();
+        //JsonElement jsonElement = gson.toJsonTree(strContent);
+        //jsonElement.isJsonObject();
+        //JsonObject jsonObject = jsonElement.getAsJsonObject();
+        //for (Object key : jsonObject.keySet()) {
+        //    params.put(key.toString(), jsonObject.get((String) key));
+        //}
         //String s = gson.toJson(strContent);
         //System.out.println(s);
 

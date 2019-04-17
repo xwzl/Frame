@@ -1,0 +1,190 @@
+{
+	"info": {
+		"_postman_id": "b4384f6c-98f7-6d75-3afc-6ec543f35b11",
+		"name": "MyFrameTest",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "localhost:8082/hystrix/getList?number=1",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8082/order/index2",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"order",
+						"index2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8081/user/getUser?id=2&user={\"username\":\"test\"}&lists=[{\"username\":\"test\"},{\"username\":\"test\"}]",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8081/demo/user/getUser?id=2&user={\"username\":\"test\"}&lists=[{\"username\":\"test\"},{\"username\":\"test\"}]",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"demo",
+						"user",
+						"getUser"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "2"
+						},
+						{
+							"key": "user",
+							"value": "{\"username\":\"test\"}"
+						},
+						{
+							"key": "lists",
+							"value": "[{\"username\":\"test\"},{\"username\":\"test\"}]"
+						}
+					]
+				},
+				"description": "get查询"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8081/user/getUser?id=2&user={\"username\":\"test\"}&lists=[{\"username\":\"test\"},{\"username\":\"test\"}] Copy",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "date",
+							"value": "1995-12-12 12:12:12",
+							"description": "12",
+							"type": "text"
+						},
+						{
+							"key": "localDateTime",
+							"value": "1995-12-12 12:12:12",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8081/demo/user/test",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"demo",
+						"user",
+						"test"
+					]
+				},
+				"description": "get查询"
+			},
+			"response": [
+				{
+					"name": "http://localhost:8081/user/getUser?id=2&user={\"username\":\"test\"}&lists=[{\"username\":\"test\"},{\"username\":\"test\"}] Copy",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:8081/demo/user/test",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"demo",
+								"user",
+								"test"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "html",
+					"header": [
+						{
+							"key": "content-type",
+							"value": "text/html; charset=UTF-8"
+						}
+					],
+					"cookie": [],
+					"body": "测试空参数"
+				}
+			]
+		},
+		{
+			"name": "http://localhost:8081/demo/user/getUsers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8081/demo/user/getUsers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"demo",
+						"user",
+						"getUsers"
+					]
+				},
+				"description": "11"
+			},
+			"response": []
+		}
+	]
+}

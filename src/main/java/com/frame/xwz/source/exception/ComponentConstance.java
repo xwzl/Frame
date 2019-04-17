@@ -6,7 +6,7 @@ package com.frame.xwz.source.exception;
  * @author xuweizhi
  * @date 2019/04/14 15:51
  */
-public class ComponentConstance {
+public interface ComponentConstance {
 
     public final static String CONTROLLER_KEY = "#";
 

@@ -5,7 +5,7 @@ import com.frame.xwz.source.exception.MyComponentException;
 import com.frame.xwz.source.handler.*;
 import com.frame.xwz.source.jdbc.DataSourcePool;
 import com.frame.xwz.source.util.PatternUtils;
-import com.frame.xwz.source.util.StringUntils;
+import com.frame.xwz.source.util.StringUtils;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
 
@@ -279,7 +279,7 @@ public class MyMapperProxy implements MethodInterceptor {
                 break;
             case STRING:
                 String resultSetString = resultSet.getString(sqlDateType);
-                if (StringUntils.isNotEmpty(resultSetString)) {
+                if (StringUtils.isNotEmpty(resultSetString)) {
                     type.set(newInstance, resultSetString);
                 }
                 break;
@@ -454,7 +454,7 @@ public class MyMapperProxy implements MethodInterceptor {
             if (mapping != null) {
                 mapping = (MyLocalMethodMapping) mapper.get(reinforceKey);
                 c = Class.forName(mapping.getClassName());
-                if (StringUntils.isNotEmpty(mapping.getMethodName())) {
+                if (StringUtils.isNotEmpty(mapping.getMethodName())) {
                     proxyMethod = c.getDeclaredMethod(mapping.getMethodName(), getClasses(objects));
                 } else {
                     proxyMethod = c.getDeclaredMethod(method.getName(), getClasses(objects));

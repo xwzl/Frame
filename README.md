@@ -10,7 +10,7 @@
 
 ## 1.2 数据库交互模块 （ Mybatis )
 
-只做了注解 @MyDelete 动态 Sql ； @MyInter、@MyUpdate、@MySelect 没有做动态 Sql 拼接，但是在 sql 参数全部不为空的情况下，正常执行是没有问题的，待完善。
+只做了注解 @MyDelete 动态 Sql ； @MyInter、@MyUpdate、@MySelect 没有做动态 Sql 拼接，但是在 sql 参数全部不为空的情况下，正常执行是没有问题的，待完善；仅涉及单边查询。
 
 ### 1.3 IOC 与 DI （ Spring ）
 
@@ -80,6 +80,8 @@ public class MyController {
 
 写这个项目的时候，严重违反了设计模式中单一职责原则、接口隔离原则、开闭原则、依赖倒置原则、迪米特法则、里氏替换原则，所以这个项目目前来说无一好处。哈哈，我也很绝望，我看到这些准则实在第三天，复习设计模式的注意到的。准确来说，上面的提到的原则，没有一条遵守。五一放假后，回来在慢慢弄，预计六月份完结。
 
+异常处理，后台异常处理，暂时未往前端抛，以后有机会再说。
+
 # 3. 启动
 
 启动前，首先要做几件事情：
@@ -88,8 +90,188 @@ Lombok 插件的安装以及配置，哦。忘记很多童鞋没有用过 Gradle
  
 ## 3.1 Gradle 的配置
 
-在[Gardel官网(http://services.gradle.org/distributions/)下载 Gradle 最新的 All.zip 包，解压到本地。
+在[Gardel官网](http://services.gradle.org/distributions/)下载 Gradle 最新的 All.zip 包，解压到本地。
 
 ![Gradle图片](src/main/resources/static/gradle.png)
 
+然后通过 Idea 检出项目
+
+![Gradle图片](src/main/resources/static/git.png)
+
+Gradel 配置，gradle 文件选择 User local gradle distribution , 远程下载特别慢
+
+![Gradle图片](src/main/resources/static/gradle2.png)
+
+配置号以后会自动导入依赖，如果导入依赖失败，刷新再次导入。
+
+![Gradle图片](src/main/resources/static/gradle3.png)
+
+## 3.2 成功后，下载 Lombok 插件，并编译注解
+
+下载 Lombok 插件
+
+![Gradle图片](src/main/resources/static/2.png)
+
+Lombok 插件设置
+
+![Gradle图片](src/main/resources/static/5.png)
+
+Java 文件编译设置，反射获取 Method 参数名
+
+ ![Gradle图片](src/main/resources/static/3.png)
  
+未加 -parameters 参数反射获取不到方法参数名，其完整命令 javac -parameters
+
+![Gradle图片](src/main/resources/static/1.png)
+
+加了以后
+
+![Gradle图片](src/main/resources/static/4.png)
+
+参数名注入的代码位置
+
+![Gradle图片](src/main/resources/static/6.png)
+
+## 3.3 数据库相关设置
+
+水平有限，数据库连接错，它居然不报错。
+
+回到整体，把 Resources 目录下的 sql 文件插入数据库，然后配置 application.properties 文件。
+
+![Gradle图片](src/main/resources/static/7.png)
+
+## 3.4 启动
+
+Netty 的日志打印好烦，试着解决了一下，发现日志打印的级别依然没有改变。但是只要有 server start up on port: 8081 启动好，就能正常方法访问
+
+![Gradle图片](src/main/resources/static/9.png)
+
+![Gradle图片](src/main/resources/static/10.png)
+
+如之下的例子：
+
+Post 请求的例子在MyFrame.postman_collection.json中，打开 Postman 导入 Js 即可
+
+其结果如下，参数处理了十几种，在com.frame.xwz.source.exception.JavaType 中
+
+### post 请求
+
+![Gradle图片](src/main/resources/static/11.png)
+
+### get 请求
+![Gradle图片](src/main/resources/static/12.png)
+
+### 空参请求
+
+![Gradle图片](src/main/resources/static/13.png)
+
+附代码
+
+```java
+package com.frame.xwz.source.exception;
+
+/**
+ * @author xuweizhi
+ * @date 2019/04/15 15:46
+ */
+public interface JavaType {
+
+    String STRING = "java.lang.String";
+
+    String CHARACTER = "java.lang.Character";
+
+    String DATE = "java.util.Date";
+
+    String INTEGER = "java.lang.Integer";
+
+    String FLOAT = "java.lang.Float";
+
+    String DOUBLE = "java.lang.Double";
+
+    String LONG = "java.lang.Long";
+
+    String BYTE = "java.lang.Byte";
+
+    String SHORT = "java.lang.Short";
+
+    String BOOLEAN = "java.lang.Boolean";
+
+    String LOCAL_DATE_TIME = "java.time.LocalDateTime";
+}
+
+```
+
+请求参数转换做得有些滑稽，应该用map存放，用一个专门的对象进行参数转化 key = methodPramType.class value 对应的转换实体，因为这个实体还可以做数据库到Mybatis的转换
+这里只做了List 集合的转换，时间格式默默认为 yyyy:MM:dd HH:mm:ss ，通过 DateUtils.format = yyyy 设置。
+
+package com.frame.xwz.source.http.MyRequestHandlerPlu
+
+```java
+package com.frame.xwz.source.http;
+
+public class MyRequestHandlerPlus {
+    
+     public Object getValue(Class<?> clazz, Object obj, boolean flag) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+            switch (clazz.getName()) {
+                case INTEGER:
+                    obj = flag ? Integer.valueOf((String) obj) : Integer.valueOf("0");
+                    break;
+                case STRING:
+                    obj = flag ? (String) obj : (String) null;
+                    break;
+                case DATE:
+                    if (flag) {
+                        obj = DateUtils.getDate((String) obj);
+                    } else {
+                        obj = (Date) null;
+                    }
+                    break;
+                case LOCAL_DATE_TIME:
+                    if (flag) {
+                        obj = DateUtils.getLocalDateTime(DateUtils.getDate((String) obj));
+                    } else {
+                        obj = (LocalDateTime) null;
+                    }
+                    break;
+                case SHORT:
+                    obj = flag ? Short.valueOf((String) obj) : (Short) null;
+                    break;
+                case LONG:
+                    obj = flag ? Long.valueOf((String) obj) : (Long) null;
+                    break;
+                case FLOAT:
+                    obj = flag ? Float.valueOf((String) obj) : (Float) null;
+                    break;
+                case DOUBLE:
+                    obj = flag ? Double.valueOf((String) obj) : (Double) null;
+                    break;
+                case BYTE:
+                    obj = flag ? Byte.valueOf((String) obj) : (Byte) null;
+                    break;
+                case BOOLEAN:
+                    obj = flag ? Boolean.valueOf((String) obj) : FALSE;
+                    break;
+                default:
+                    if (clazz.getName().contains("List")) {
+                        obj = GsonUtil.parseJsonArrayWithGson((String) obj, clazz);
+                    } else {
+                        obj = GsonUtil.parseJsonWithGson((String) obj, clazz);
+                    }
+            }
+            return obj;
+        }
+
+}
+
+
+```
+
+# 4. 彩蛋
+
+用浏览器请求，右上角的角标是是什么呢？？
+
+哈哈哈 
+
+如果删除 resources 目录下的 icon.png 又会怎么样呢？
+
+其实有很多隐藏的彩蛋，等待各位的发现！
