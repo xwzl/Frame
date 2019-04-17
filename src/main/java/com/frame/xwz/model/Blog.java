@@ -1,9 +1,9 @@
 package com.frame.xwz.model;
 
 
-import com.frame.xwz.auto.MyAutowired;
-import com.frame.xwz.auto.MyComponent;
 import com.frame.xwz.controller.MyControllers;
+import com.frame.xwz.source.auto.MyAutowired;
+import com.frame.xwz.source.auto.MyComponent;
 
 import java.util.Date;
 

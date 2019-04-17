@@ -1,23 +1,18 @@
 package com.frame.xwz.model;
 
-import com.frame.xwz.auto.MyColumn;
+
+import com.frame.xwz.source.auto.MyColumn;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * <p>
- *
- * </p>
- *
  * @author 徐伟智
  * @since 2019-04-03
  */
 @Data
 public class User implements Serializable {
-
-    private static final long serialVersionUID = 1L;
 
     @MyColumn("u_id")
     private Integer uId;

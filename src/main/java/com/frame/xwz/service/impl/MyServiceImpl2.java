@@ -1,10 +1,11 @@
 package com.frame.xwz.service.impl;
 
 
-import com.frame.xwz.auto.MyAutowired;
-import com.frame.xwz.auto.MyService;
 import com.frame.xwz.mapper.Mapper;
+import com.frame.xwz.model.User;
 import com.frame.xwz.service.MyServices;
+import com.frame.xwz.source.auto.MyAutowired;
+import com.frame.xwz.source.auto.MyService;
 
 /**
  * @author xuweizhi
@@ -17,7 +18,8 @@ public class MyServiceImpl2 implements MyServices {
     public Mapper mapper;
 
     @Override
-    public void run() {
-        mapper.fineBlog("111", "2222");
+    public User getUserById(Integer id) {
+        return mapper.getUserById(id);
     }
+
 }
